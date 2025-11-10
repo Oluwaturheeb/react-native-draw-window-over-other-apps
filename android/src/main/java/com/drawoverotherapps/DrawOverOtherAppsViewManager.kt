@@ -1,41 +1,23 @@
 package com.drawoverotherapps
 
-import android.graphics.Color
-import com.facebook.react.module.annotations.ReactModule
-import com.facebook.react.uimanager.SimpleViewManager
+import android.widget.FrameLayout
 import com.facebook.react.uimanager.ThemedReactContext
-import com.facebook.react.uimanager.ViewManagerDelegate
-import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.viewmanagers.DrawOverOtherAppsViewManagerInterface
-import com.facebook.react.viewmanagers.DrawOverOtherAppsViewManagerDelegate
+import com.facebook.react.uimanager.ViewGroupManager
 
-@ReactModule(name = DrawOverOtherAppsViewManager.NAME)
-class DrawOverOtherAppsViewManager : SimpleViewManager<DrawOverOtherAppsView>(),
-  DrawOverOtherAppsViewManagerInterface<DrawOverOtherAppsView> {
-  private val mDelegate: ViewManagerDelegate<DrawOverOtherAppsView>
+class DrawOverOtherAppsViewManager : ViewGroupManager<FrameLayout>() {
 
-  init {
-    mDelegate = DrawOverOtherAppsViewManagerDelegate(this)
+  override fun getName(): String = "DrawOverOtherAppsView"
+
+  override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
+    return FrameLayout(reactContext)
   }
 
-  override fun getDelegate(): ViewManagerDelegate<DrawOverOtherAppsView>? {
-    return mDelegate
-  }
-
-  override fun getName(): String {
-    return NAME
-  }
-
-  public override fun createViewInstance(context: ThemedReactContext): DrawOverOtherAppsView {
-    return DrawOverOtherAppsView(context)
-  }
-
-  @ReactProp(name = "color")
-  override fun setColor(view: DrawOverOtherAppsView?, color: String?) {
-    view?.setBackgroundColor(Color.parseColor(color))
-  }
-
-  companion object {
-    const val NAME = "DrawOverOtherAppsView"
+  override fun onDropViewInstance(view: FrameLayout) {
+    super.onDropViewInstance(view)
+    val module =
+            view.context
+                    .let { (it as? ThemedReactContext)?.reactApplicationContext }
+                    ?.getNativeModule(DrawOverOtherAppsView::class.java)
+    module?.hideOverlay()
   }
 }

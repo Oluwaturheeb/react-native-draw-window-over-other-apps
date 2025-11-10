@@ -1,37 +1,91 @@
-# react-native-draw-over-other-apps
+# `react-native-draw-over-other-apps`
 
-This library let you add react-native components over other apps like a picture in picture mode on android
-
-## Installation
-
-
-```sh
-npm install react-native-draw-over-other-apps
-```
-
-
-## Usage
-
-
-```js
-import { DrawOverOtherAppsView } from "react-native-draw-over-other-apps";
-
-// ...
-
-<DrawOverOtherAppsView color="tomato" />
-```
-
-
-## Contributing
-
-- [Development workflow](CONTRIBUTING.md#development-workflow)
-- [Sending a pull request](CONTRIBUTING.md#sending-a-pull-request)
-- [Code of conduct](CODE_OF_CONDUCT.md)
-
-## License
-
-MIT
+A React Native module to display overlays (floating views) above other apps, similar to chat heads.
 
 ---
 
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+## 📦 Installation
+
+```bash
+npm install react-native-draw-over-other-apps
+# or
+yarn add react-native-draw-over-other-apps
+```
+
+> Make sure your app has **`SYSTEM_ALERT_WINDOW` permission** enabled for overlays to work on Android.
+
+---
+
+## 🔹 Importing the module
+
+```javascript
+import DrawOverOtherApps from 'react-native-draw-over-other-apps';
+```
+
+---
+
+## 🔹 Usage
+
+### Show overlay
+
+```jsx
+<DrawOverOtherApps show={true} />
+```
+
+This will start the overlay service and display your registered React Native component above other apps.
+
+### Hide overlay
+
+```javascript
+DrawOverOtherApps.hideOverlay();
+```
+
+### Bring your app back to foreground
+
+```javascript
+DrawOverOtherApps.openApp();
+```
+
+---
+
+## 🔹 Register your overlay component
+
+<span style="color:red">The name **must be exactly `OverlayContent`**</span>:
+
+```javascript
+import { AppRegistry } from 'react-native';
+import OverlayContent from './OverlayContent';
+
+AppRegistry.registerComponent('OverlayContent', () => OverlayContent);
+```
+
+---
+
+## 🔹 Example `OverlayContent`
+
+```javascript
+import React from 'react';
+import { View, Text, Pressable } from 'react-native';
+
+const OverlayContent = () => (
+  <View style={{ padding: 10, backgroundColor: 'blue', flex: 1 }}>
+    <View style={{ backgroundColor: 'black', borderRadius: 12, padding: 12 }}>
+      <Text style={{ color: 'white', fontWeight: 'bold' }}>Overlay</Text>
+      <Pressable onPress={() => DrawOverOtherApps.openApp()}>
+        <Text style={{ color: 'red', fontWeight: 'bold' }}>Open App</Text>
+      </Pressable>
+    </View>
+  </View>
+);
+
+export default OverlayContent;
+```
+
+---
+
+## ⚡ Notes
+
+- Make sure `show={true}` is passed to display the overlay.
+- The overlay component is rendered by the **service**, so it will appear even when your app is in the background.
+- Use `hideOverlay()` to remove it safely.
+- Use `openApp()` to bring your app back from the overlay.
