@@ -1,6 +1,6 @@
 {
   "name": "react-native-draw-over-other-apps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This library let you add react-native components over other apps like a picture in picture mode on android",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
