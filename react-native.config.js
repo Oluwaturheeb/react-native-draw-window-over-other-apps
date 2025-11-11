@@ -2,7 +2,7 @@ module.exports = {
   dependency: {
     platforms: {
       android: {
-        packageInstance: 'new DrawOverOtherAppsPackage()',
+        packageInstance: 'new DrawOverOtherAppsViewPackage()',
         sourceDir: './android',
       },
     },
